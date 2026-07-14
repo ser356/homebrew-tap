@@ -1,25 +1,24 @@
-# Homebrew formula template — el workflow de release sustituye los
-# placeholders `0.1.0` y `2a2befb426a7eef398e76b2c641f66ddeeb51f653e02033760f052b2564edc1a` con los valores reales
-# de cada release y hace push del resultado al repo `ser356/homebrew-tap`
+# Homebrew formula template — el workflow de release sustituye
+# `0.1.0` y `da1ac3db5fd7aec01fd38920219f4ccd987dcdddbef94050222675a5f1862e4e` con los valores reales de cada
+# release y hace push del resultado al repo `ser356/homebrew-tap`
 # (fichero `Formula/letterboxd-cli.rb`).
 #
-# Solo macOS Apple Silicon. Para Linux se recomienda `cargo install --git`
-# o el flake.nix del repo.
+# Instalación desde código fuente: brew descarga el tarball del tag,
+# compila con cargo y coloca el binario en `bin`. Las credenciales de app
+# están hardcoded en el source, así que el binario resultante ya funciona
+# sin configuración adicional.
 class LetterboxdCli < Formula
   desc "Letterboxd recs + torrent search + BitTorrent streaming"
   homepage "https://github.com/ser356/letterboxd-cli"
+  url "https://github.com/ser356/letterboxd-cli/archive/refs/tags/v0.1.0.tar.gz"
   version "0.1.0"
+  sha256 "da1ac3db5fd7aec01fd38920219f4ccd987dcdddbef94050222675a5f1862e4e"
   license "MIT"
 
-  on_macos do
-    on_arm do
-      url "https://github.com/ser356/letterboxd-cli/releases/download/v#{version}/letterboxd-cli-macos-arm64.tar.gz"
-      sha256 "2a2befb426a7eef398e76b2c641f66ddeeb51f653e02033760f052b2564edc1a"
-    end
-  end
+  depends_on "rust" => :build
 
   def install
-    bin.install "letterboxd-cli"
+    system "cargo", "install", *std_cargo_args(path: ".")
   end
 
   def caveats
