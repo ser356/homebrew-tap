@@ -1,6 +1,6 @@
 # Homebrew formula template — el workflow de release sustituye los
-# placeholders `0.1.0` y `166bf4b97eb26bd0a26bfd44804a7a150f9851f04ad54190567549de81cc629e` con los valores reales
-# de cada release, y hace push del resultado al repo `ser356/homebrew-tap`
+# placeholders `0.1.0` y `2a2befb426a7eef398e76b2c641f66ddeeb51f653e02033760f052b2564edc1a` con los valores reales
+# de cada release y hace push del resultado al repo `ser356/homebrew-tap`
 # (fichero `Formula/letterboxd-cli.rb`).
 #
 # Solo macOS Apple Silicon. Para Linux se recomienda `cargo install --git`
@@ -14,15 +14,9 @@ class LetterboxdCli < Formula
   on_macos do
     on_arm do
       url "https://github.com/ser356/letterboxd-cli/releases/download/v#{version}/letterboxd-cli-macos-arm64.tar.gz"
-      sha256 "166bf4b97eb26bd0a26bfd44804a7a150f9851f04ad54190567549de81cc629e"
+      sha256 "2a2befb426a7eef398e76b2c641f66ddeeb51f653e02033760f052b2564edc1a"
     end
-    # Nota: no publicamos binario x86_64-apple-darwin porque los runners
-    # macos-13 de GitHub Actions están deprecated. Los Macs Intel deben
-    # instalar vía `cargo install --git https://github.com/ser356/letterboxd-cli`.
   end
-
-  # VLC solo existe como cask en macOS y una fórmula no puede depender de
-  # un cask en Homebrew moderno. Se documenta como paso manual en caveats.
 
   def install
     bin.install "letterboxd-cli"
@@ -36,31 +30,6 @@ class LetterboxdCli < Formula
 
       Para el streaming BitTorrent hace falta VLC:
         brew install --cask vlc
-    EOS
-  end
-
-  test do
-    assert_match "letterboxd-cli", shell_output("#{bin}/letterboxd-cli --help 2>&1", 2)
-  end
-end
-
-  def install
-    bin.install "letterboxd-cli"
-  end
-
-  def caveats
-    <<~EOS
-      La primera vez que abras la TUI, se te pedirá login de Letterboxd.
-      Las credenciales de la app ya vienen bakeadas — no tienes que
-      configurar nada más.
-
-      Para el streaming BitTorrent hace falta VLC. Instálalo con el
-      gestor apropiado de tu sistema:
-
-        macOS:  brew install --cask vlc
-        Debian: sudo apt install vlc
-        Fedora: sudo dnf install vlc
-        Arch:   sudo pacman -S vlc
     EOS
   end
 
